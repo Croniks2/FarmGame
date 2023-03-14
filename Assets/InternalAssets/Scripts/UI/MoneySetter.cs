@@ -38,20 +38,19 @@ public class MoneySetter : MonoBehaviour, ICoinsChangeHandler
     private Sequence GetSellSequence(Coin coin, int count)
     {
         float previousCount = _preivousCount;
+        _preivousCount = count;
 
         Sequence moneyReceivingSeq = DOTween.Sequence().SetRecyclable(true);
 
         moneyReceivingSeq
-            .Insert(0.10f, _moneyInfoContainer.DOShakePosition(0.15f, 5f));
+            .Insert(0.1f, _moneyInfoContainer.DOShakePosition(0.15f, 5f));
 
         for(int i = 0; i < count - previousCount; i++)
         {
             moneyReceivingSeq
-                .InsertCallback(0.10f + i * 0.01f, () => { previousCount++; _text.text = previousCount.ToString(); }).SetRecyclable(true);
+                .InsertCallback(0.1f + i * 0.01f, () => { previousCount++; _text.text = previousCount.ToString(); }).SetRecyclable(true);
         }
-
-        moneyReceivingSeq.OnComplete(() => { _preivousCount = count; });
-
+        
         Sequence flyCoinSeq = DOTween.Sequence().SetRecyclable(true);
         float interval = -0.25f;
         flyCoinSeq
